@@ -38,7 +38,7 @@ $('#search').on('click',function(event){
 
 
 // ajax request
-$('.animal').on('click',function(){
+function displayGiph(){
     $('#giphy-display').empty();
     var animal = $(this).val();
     var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR'
@@ -56,4 +56,7 @@ $('.animal').on('click',function(){
             $('#giphy-display').append(giphy);
         });;   
     })
-})
+}
+
+$(document).on('click','.animal',displayGiph);
+   
