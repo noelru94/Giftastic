@@ -10,16 +10,37 @@
 
 
 var animals = ['dog', 'cat', 'rabbit','hamster','turtle','frog'];
-console.log(animals);
 
+
+
+//
+
+
+// each animal recieves its own button with value
 function renderButton(){
     for( var i in animals ){
         var newButton = $('<button type="button">');
+        newButton.addClass('animal');
         newButton.attr('value',animals[i]);
         newButton.text(animals[i]);
-        $('#buttons-display').append(newButton);
-        console.log(newButton.val)
+        $('#buttons-container').append(newButton);
     }
 }
 
 renderButton();
+
+
+
+// ajax request
+$('.animal').on('click',function(){
+    var animal = $(this).val();
+    var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR'
+    var queryURL= `http://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`
+    console.log(animal);
+    $.ajax({
+        url: queryURL,
+        method: 'GET'
+    }).then(function(response){
+        console.log(response)
+    })
+})
