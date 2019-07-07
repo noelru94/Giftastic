@@ -11,28 +11,35 @@
 
 var animals = ['dog', 'cat', 'rabbit','hamster','turtle','frog'];
 
-
-
-//
-
-
 // each animal recieves its own button with value
 function renderButton(){
-    for( var i in animals ){
+    console.log(animals)
+    animals.forEach(animal =>{
         var newButton = $('<button type="button">');
         newButton.addClass('animal');
-        newButton.attr('value',animals[i]);
-        newButton.text(animals[i]);
+        newButton.attr('value',animal);
+        newButton.text(animal);
         $('#buttons-container').append(newButton);
-    }
+    })
 }
-
 renderButton();
 
+
+// user search
+$('#search').on('click',function(event){
+    event.preventDefault();
+    var search = $('#search-input').val();
+    animals.push(search);
+    console.log(animals);
+
+    $('#buttons-container').empty()
+    renderButton();
+})
 
 
 // ajax request
 $('.animal').on('click',function(){
+    $('#giphy-display').empty();
     var animal = $(this).val();
     var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR'
     var queryURL= `https://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`
@@ -45,8 +52,8 @@ $('.animal').on('click',function(){
         var dataArr = response.data;
         dataArr.forEach(element => {
             var newImage = $('<img>');
-            newImage.attr('src',element.images.fixed_height.webp);
-            $('#giphy-display').append(newImage);
+            var giphy = newImage.attr('src',element.images.fixed_height.webp);
+            $('#giphy-display').append(giphy);
         });;   
     })
 })
