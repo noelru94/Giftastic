@@ -35,12 +35,18 @@ renderButton();
 $('.animal').on('click',function(){
     var animal = $(this).val();
     var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR'
-    var queryURL= `http://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`
+    var queryURL= `https://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`
     console.log(animal);
     $.ajax({
         url: queryURL,
         method: 'GET'
+        // display giphy
     }).then(function(response){
-        console.log(response)
+        var dataArr = response.data;
+        dataArr.forEach(element => {
+            var newImage = $('<img>');
+            newImage.attr('src',element.images.fixed_height.webp);
+            $('#giphy-display').append(newImage);
+        });;   
     })
 })
