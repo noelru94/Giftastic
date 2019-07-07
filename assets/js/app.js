@@ -11,9 +11,9 @@
 
 var animals = ['dog', 'cat', 'rabbit','hamster','turtle','frog'];
 
+
 // each animal recieves its own button with value
 function renderButton(){
-    console.log(animals)
     animals.forEach(animal =>{
         var newButton = $('<button type="button">');
         newButton.addClass('animal');
@@ -30,33 +30,48 @@ $('#search').on('click',function(event){
     event.preventDefault();
     var search = $('#search-input').val();
     animals.push(search);
-    console.log(animals);
-
     $('#buttons-container').empty()
     renderButton();
 })
 
 
 // ajax request
-function displayGiph(){
+function displayGiphy(){
     $('#giphy-display').empty();
     var animal = $(this).val();
-    var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR'
-    var queryURL= `https://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`
+    var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR';
+    var queryURL= `https://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`;
     console.log(animal);
     $.ajax({
         url: queryURL,
         method: 'GET'
         // display giphy
     }).then(function(response){
+        console.log(response)
         var dataArr = response.data;
         dataArr.forEach(element => {
             var newImage = $('<img>');
-            var giphy = newImage.attr('src',element.images.fixed_height.webp);
+            var giphy = newImage.attr('src',element.images.original_still.url);
+            giphy.addClass('giphy');
+            giphy.attr('data-state','still');
+            giphy.attr('data-animate',element.images.fixed_height.webp);
+            giphy.attr('data-still',element.images.original_still.url);
             $('#giphy-display').append(giphy);
         });;   
     })
 }
 
-$(document).on('click','.animal',displayGiph);
-   
+function animate(){
+    var state = $(this).attr('data-state')
+    if( state === 'still' ){
+        $(this).attr('src',$(this).attr('data-animate'));
+        $(this).attr('data-state','animate');
+    }else{
+        $(this).attr('src',$(this).attr('data-still'));
+        $(this).attr('data-state','still');
+    }
+}
+
+
+$(document).on('click','.animal',displayGiphy)
+$(document).on('click','.giphy', animate)
