@@ -11,3 +11,15 @@ img{
     height: 300px;
     margin: 10px;
 }
+
+img:hover{
+    cursor: pointer;
+}
+
+.card{
+    margin:10px;
+}
+
+img{
+    margin: 0px;
+}
