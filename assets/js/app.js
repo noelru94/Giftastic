@@ -1,16 +1,4 @@
-// array to store topics
-// each topic recieves its own button
-// each button has its own value('topic')
-// the value is stored in variable, when a button is clicked.
-// the variable is used as a parameter in the url
-// when a button is clicked an ajax request is sent to the  giphy api 
-// once the ajax request is complete a function is ran to display the giphys
-// the giphy display show only one topic at a time
-// the value of the seach input is pushed into the topics array
-
-
 var animals = ['dog', 'cat', 'rabbit','hamster','turtle','frog'];
-
 
 // each animal recieves its own button with value
 function renderButton(){
@@ -22,10 +10,9 @@ function renderButton(){
         $('#buttons-container').append(newButton);
     })
 }
-renderButton();
 
 
-// user search
+// search form
 $('#search').on('click',function(event){
     event.preventDefault();
     var search = $('#search-input').val();
@@ -35,31 +22,34 @@ $('#search').on('click',function(event){
 })
 
 
-// ajax request
 function displayGiphy(){
     $('#giphy-display').empty();
     var animal = $(this).val();
     var apiKEY = 'ugy0m2ClxBHu79FwKgVHVTt0zub1WdlR';
     var queryURL= `https://api.giphy.com/v1/gifs/search?q=${animal}&api_key=${apiKEY}&limit=10`;
-    console.log(animal);
+
     $.ajax({
         url: queryURL,
         method: 'GET'
-        // display giphy
     }).then(function(response){
-        console.log(response)
         var dataArr = response.data;
         dataArr.forEach(element => {
-            var newImage = $('<img>');
-            var giphy = newImage.attr('src',element.images.original_still.url);
-            giphy.addClass('giphy');
-            giphy.attr('data-state','still');
-            giphy.attr('data-animate',element.images.fixed_height.webp);
-            giphy.attr('data-still',element.images.original_still.url);
-            $('#giphy-display').append(giphy);
-        });;   
+            var animate = element.images.fixed_height.webp;
+            var still = element.images.original_still.url
+            var rating = element.rating;
+            var card = 
+            $(`<div class="card" style="width: 19rem; display: inline-block">
+            <img class="giphy card-img-top" style="width:100%" data-animate="${animate}" data-still="${still} data-state="still" src="${still}">
+                <div class="card-body">
+                    <h3 class="card-title"></h3>
+                    <p class="card-text"> Rating: ${rating}</p>
+                </div>
+            </div>`);
+            $('#giphy-display').append(card);
+        });; 
     })
 }
+
 
 function animate(){
     var state = $(this).attr('data-state')
@@ -72,6 +62,6 @@ function animate(){
     }
 }
 
-
+renderButton();
 $(document).on('click','.animal',displayGiphy)
 $(document).on('click','.giphy', animate)
