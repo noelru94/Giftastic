@@ -41,7 +41,6 @@ function displayGiphy(){
             $(`<div class="card" style="width: 19rem; display: inline-block">
             <img class="giphy card-img-top" style="width:100%" data-animate="${animate}" data-still="${still} data-state="still" src="${still}">
                 <div class="card-body">
-                    <h3 class="card-title"></h3>
                     <p class="card-text"> Rating: ${rating}</p>
                 </div>
             </div>`);
